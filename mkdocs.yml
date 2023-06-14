@@ -1,1 +1,16 @@
-site_name: My Docs
+site_name: LLM Legal Prompt Engineering
+nav:
+  - Code Reference: reference/
+
+theme:
+  name: material
+
+plugins:
+- search
+- gen-files:
+    scripts:
+    - docs/gen_ref_pages.py
+- literate-nav:
+    nav_file: SUMMARY.md
+- section-index
+- mkdocstrings
