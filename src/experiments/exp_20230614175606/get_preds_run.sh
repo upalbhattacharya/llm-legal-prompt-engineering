@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-python evaluate.py -d /DATA/upal/Datasets/LLPE/variations/v1/data/test \
+python get_preds.py -d /DATA/upal/Datasets/LLPE/variations/v1/data/test \
     -t /DATA/upal/Datasets/LLPE/variations/v1/targets/case_statute_targets.json \
     -n inlegalbert_r1_test \
     -p params_word2vec_200.json \

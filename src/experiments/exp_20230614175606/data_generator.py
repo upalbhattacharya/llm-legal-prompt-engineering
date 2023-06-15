@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-# Birth: 2022-12-23 12:23:51.378499488 +0530
-# Modify: 2022-12-23 12:18:11.000000000 +0530
+# Birth: 2022-06-19 10:27:51.292441221 +0530
+# Modify: 2022-06-19 10:15:49.040289676 +0530
 
 """Data loader for BertMultiLabel"""
 
@@ -49,7 +49,7 @@ class BertMultiLabelDataset(Dataset):
             return data, target
         else:
             flname = os.path.splitext(os.path.basename(self.idx[idx]))[0]
-            return flname, data
+            return data, target, idx
 
     def get_fullpaths(self):
 
