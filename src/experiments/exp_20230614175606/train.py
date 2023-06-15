@@ -167,7 +167,7 @@ def train_and_evaluate(
             "metrics",
             f"{name}",
             "train",
-            f"epoch_{epoch + 1}_train_f1.json",
+            f"epoch_{epoch + 1}_train_stats.json",
         )
         utils.save_dict_to_json(train_stats, train_json_path)
 
@@ -176,7 +176,7 @@ def train_and_evaluate(
             "metrics",
             f"{name}",
             "val",
-            f"epoch_{epoch + 1}_val_f1.json",
+            f"epoch_{epoch + 1}_val_stats.json",
         )
         utils.save_dict_to_json(val_stats, val_json_path)
 
@@ -186,7 +186,7 @@ def train_and_evaluate(
             train_stats["epoch"] = epoch + 1
 
             best_json_path = os.path.join(
-                exp_dir, "metrics", f"{name}", "train", "best_train_f1.json"
+                exp_dir, "metrics", f"{name}", "train", "best_train_stats.json"
             )
             utils.save_dict_to_json(train_stats, best_json_path)
 
@@ -195,7 +195,7 @@ def train_and_evaluate(
             val_stats["epoch"] = epoch + 1
 
             best_json_path = os.path.join(
-                exp_dir, "metrics", f"{name}", "val", "best_val_f1.json"
+                exp_dir, "metrics", f"{name}", "val", "best_val_stats.json"
             )
             utils.save_dict_to_json(val_stats, best_json_path)
 
@@ -353,7 +353,7 @@ def main():
 
     val_loader = DataLoader(
         val_dataset,
-        batch_size=1,
+        batch_size=params.batch_size,
         shuffle=True,
     )
 
