@@ -40,7 +40,7 @@ def train_one_epoch(
     accumulate = utils.Accumulate()
 
     # Training Loop
-    for i, (data, target) in enumerate(iter(data_loader)):
+    for i, (data, target, _) in enumerate(iter(data_loader)):
         logging.info(f"Training on batch {i + 1}.")
         target = target.to(args.device)
         # Data is moved to relevant device in net.py after tokenization
@@ -341,7 +341,6 @@ def main():
         data_paths=val_paths,
         targets_paths=args.targets_paths,
         unique_labels=args.unique_labels,
-        mode="eval",
     )
 
     logging.info(f"Training with {len(train_dataset.unique_labels)} targets")
@@ -354,7 +353,7 @@ def main():
 
     val_loader = DataLoader(
         val_dataset,
-        batch_size=params.batch_size,
+        batch_size=1,
         shuffle=True,
     )
 

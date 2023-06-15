@@ -52,11 +52,13 @@ def evaluate(model, loss_fn, data_loader, params, metrics, args, target_names):
         accumulate.update(outputs_batch, targets_batch)
         loss_batch.append(loss.item())
 
-        pred = outputs_batch[0]
-        pred_idx = [i for i, val in enumerate(pred) if val != 0.0]
-        pred_names = [target_names[j] for j in pred_idx]
-        idx = idx[0]
-        preds[idx] = pred_names
+        pred_idx = [
+            [i for i, val in enumerate(pred) if val != 0.0]
+            for pred in outputs_batch
+        ]
+        pred_names = [[target_names[j] for j in pred] for pred in pred_idx]
+        for i, pred in zip(idx, pred_names):
+            preds[idx] = pred
 
         del data
         del target
@@ -176,7 +178,6 @@ def main():
         data_paths=args.data_paths,
         targets_paths=args.targets_paths,
         unique_labels=args.unique_labels,
-        mode="eval",
     )
 
     logging.info(f"[DATASET] Using {len(test_dataset.unique_labels)} targets")
