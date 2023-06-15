@@ -58,7 +58,7 @@ def evaluate(model, loss_fn, data_loader, params, metrics, args, target_names):
         ]
         pred_names = [[target_names[j] for j in pred] for pred in pred_idx]
         for i, pred in zip(idx, pred_names):
-            preds[idx] = pred
+            preds[i] = pred
 
         del data
         del target
