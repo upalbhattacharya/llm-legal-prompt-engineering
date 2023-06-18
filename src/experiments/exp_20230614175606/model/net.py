@@ -36,7 +36,7 @@ class BertMultiLabel(nn.Module):
         self.hidden_size = hidden_size
         self.device = device
         self.max_length = max_length
-        self.labels = [re.sub(r"[^A-Za-z]", "", label) for label in labels]
+        self.labels = [re.sub(r"[^A-Za-z0-9_]", "", label) for label in labels]
         self.model_name = model_name
         self.model = AutoModel.from_pretrained(self.model_name)
         self.truncation_side = truncation_side
