@@ -14,6 +14,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import utils
+from asl_loss import AsymmetricLoss
 from data_generator import BertMultiLabelDataset
 from evaluate import evaluate
 from metrics import metrics
@@ -370,7 +371,8 @@ def main():
 
     # Defining optimizer and loss function
     optimizer = optim.Adam(model.parameters(), lr=params.lr)
-    loss_fn = nn.BCELoss(reduction="sum")
+    # loss_fn = nn.BCELoss(reduction="sum")
+    loss_fn = AsymmetricLoss()
 
     train_and_evaluate(
         model,
