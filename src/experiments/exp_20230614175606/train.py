@@ -64,9 +64,6 @@ def train_one_epoch(
 
         accumulate.update(outputs_batch, targets_batch)
 
-        # For debugging purposes
-        print(y_pred)
-
         del data
         del target
         del outputs_batch
