@@ -5,9 +5,9 @@
 # name given to each model
 
 # New Facts, DHC and SC
-python train.py -d /DATA/upal/Datasets/LLPE/variations/v1/data/ \
-    -t /DATA/upal/Datasets/LLPE/variations/v1/targets/case_statute_targets.json \
-    -n inlegalbert_r1 \
-    -p params_word2vec_200.json \
+python train.py -d /DATA1/upal/Datasets/LLPE/variations/v1/data/ \
+    -t /DATA1/upal/Datasets/LLPE/variations/v1/targets/case_statute_targets.json \
+    -n inlegalbert_r2 \
+    -p params_inlegalbert.json \
     -lm "law-ai/InLegalBERT" \
     -id 1
