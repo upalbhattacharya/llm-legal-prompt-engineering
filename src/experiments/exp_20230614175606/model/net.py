@@ -9,6 +9,7 @@ import re
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from transformers import AutoModel, AutoTokenizer
 
 __author__ = "Upal Bhattacharya"
@@ -77,12 +78,17 @@ class BertMultiLabel(nn.Module):
         encoding = self.model(**tokenized)
         # Retaining only the [CLS] token
         cls = encoding.last_hidden_state[:, 0, :]
-        m = nn.Sigmoid()
+        relu = nn.ReLU()
+        # cls = relu(cls)
+        # m = nn.Sigmoid()
         for label in self.labels:
             pred = self.prediction[label](cls)
             preds = torch.cat((preds, pred), dim=-1)
 
-        preds = m(preds)
+        # preds = F.normalize(preds, dim=0)
+
+        # preds = relu(preds)
+        # preds = m(preds)
         if self.mode == "train":
             return preds
         else:

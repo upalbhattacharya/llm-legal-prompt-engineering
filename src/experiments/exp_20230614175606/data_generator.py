@@ -94,7 +94,8 @@ class BertMultiLabelDataset(Dataset):
 
     def load_data(self, path):
         with open(path, "r") as f:
-            data = f.read()
+            data = f.readlines()
+        data = " ".join(map(lambda x: x.strip("\n"), data))
         return data
 
     def get_unique_labels(self):

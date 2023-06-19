@@ -8,6 +8,8 @@
 import argparse
 import logging
 import os
+from collections import Counter
+from itertools import chain
 
 import numpy as np
 import torch
@@ -33,6 +35,7 @@ def train_one_epoch(
 ):
     # Set model to train
     model.train()
+    m = nn.Sigmoid()
 
     criterion = loss_fn
 
@@ -42,7 +45,7 @@ def train_one_epoch(
 
     # Training Loop
     for i, (data, target, _) in enumerate(iter(data_loader)):
-        logging.info(f"Training on batch {i + 1}.")
+        logging.info(f"Training on batch {i + 1} with {len(data)} datapoints.")
         target = target.to(args.device)
         # Data is moved to relevant device in net.py after tokenization
         data = list(data)
@@ -57,7 +60,7 @@ def train_one_epoch(
             loss_batch.append(loss.item())
 
         outputs_batch = (
-            y_pred.data.cpu().detach().numpy() > params.threshold
+            m(y_pred).data.cpu().detach().numpy() >= params.threshold
         ).astype(np.int32)
 
         targets_batch = (target.data.cpu().detach().numpy()).astype(np.int32)
@@ -368,8 +371,29 @@ def main():
 
     # Defining optimizer and loss function
     optimizer = optim.Adam(model.parameters(), lr=params.lr)
-    # loss_fn = nn.BCELoss(reduction="sum")
-    loss_fn = AsymmetricLoss()
+
+    logging.info("Calculating positive weights for loss")
+
+    target_counts = Counter(
+        chain.from_iterable(
+            train_dataset.targets_dict[v] for v in train_dataset.idx.values()
+        )
+    )
+    logging.info(f"Number of positives for classes: {target_counts}")
+
+    pos_weight = [
+        (1.0 - target_counts[k] * 1 / len(train_dataset))
+        * (len(train_dataset) * 1.0 / target_counts.get(k, 1))
+        for k in train_dataset.unique_labels
+    ]
+
+    pos_weight = torch.FloatTensor(pos_weight)
+    pos_weight.to(args.device)
+    logging.info(f"Calculated positive weights are: {pos_weight}")
+    loss_fn = nn.BCEWithLogitsLoss(reduction="sum", pos_weight=pos_weight).to(
+        args.device
+    )
+    # loss_fn = AsymmetricLoss()
 
     train_and_evaluate(
         model,

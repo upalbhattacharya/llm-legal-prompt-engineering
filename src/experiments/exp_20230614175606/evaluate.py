@@ -29,6 +29,7 @@ def evaluate(model, loss_fn, data_loader, params, metrics, args, target_names):
 
     # Set model to eval mode
     model.eval()
+    m = nn.Sigmoid()
 
     # Accumulate data of batches
     accumulate = utils.Accumulate()
@@ -44,9 +45,9 @@ def evaluate(model, loss_fn, data_loader, params, metrics, args, target_names):
 
         loss = criterion(y_pred.float(), target.float())
 
-        outputs_batch = (y_pred.data.cpu().numpy() > params.threshold).astype(
-            np.int32
-        )
+        outputs_batch = (
+            m(y_pred).data.cpu().numpy() > params.threshold
+        ).astype(np.int32)
         targets_batch = (target.data.cpu().numpy()).astype(np.int32)
 
         accumulate.update(outputs_batch, targets_batch)
