@@ -202,7 +202,7 @@ def main():
 
     # Defining optimizer and loss function
     optimizer = optim.Adam(model.parameters(), lr=params.lr)
-    loss_fn = nn.BCELoss(reduction="sum")
+    loss_fn = nn.BCEWithLogitsLoss(reduction="sum")
 
     test_stats = evaluate(
         model,
