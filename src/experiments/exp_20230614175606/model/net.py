@@ -61,7 +61,9 @@ class BertMultiLabel(nn.Module):
 
     def process(self, x):
         if self.max_length == -1:
-            tokenized = self.tokenizer(x, return_tensors="pt")
+            tokenized = self.tokenizer(
+                x, return_tensors="pt", padding="longest"
+            )
         else:
             tokenized = self.tokenizer(
                 x,
